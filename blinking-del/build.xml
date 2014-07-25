@@ -1,0 +1,36 @@
+<project name="blinking-del" default="build" basedir=".">
+    <property name="build" value="Debug" />
+    <property name="binary" value="blinking-del" />
+    <property name="project" value="blinking-del" />
+
+    <target name="prepare">
+        <exec executable="ssh">
+            <arg value="root@rpi.lan" />
+            <arg value="-C" />
+            <arg value="mkdir -p ~/${project}" />
+        </exec>
+    </target>
+
+    <target name="upload">
+        <exec executable="scp">
+            <arg value="${build}/${binary}" />
+            <arg value="root@rpi.lan:~/${project}/${binary}" />
+        </exec>
+    </target>
+
+    <target name="build" depends="upload">
+        <exec executable="ssh">
+            <arg value="root@rpi.lan" />
+            <arg value="-C" />
+            <arg value="chmod a+x ~/${project}/${binary}" />
+        </exec>
+    </target>
+
+    <target name="clean">
+        <exec executable="ssh">
+            <arg value="root@rpi.lan" />
+            <arg value="-C" />
+            <arg value="rm -rf ~/${project}" />
+        </exec>
+    </target>
+</project>
