@@ -3,24 +3,26 @@
     <property name="binary" value="blinking-del" />
     <property name="project" value="blinking-del" />
 
+    <property file="user.properties" />
+
     <target name="prepare">
         <exec executable="ssh">
-            <arg value="root@rpi.lan" />
+            <arg value="root@${rpi.hostname}" />
             <arg value="-C" />
             <arg value="mkdir -p ~/${project}" />
         </exec>
     </target>
 
-    <target name="upload">
+    <target name="upload" depends="prepare">
         <exec executable="scp">
             <arg value="${build}/${binary}" />
-            <arg value="root@rpi.lan:~/${project}/${binary}" />
+            <arg value="root@${rpi.hostname}:~/${project}/${binary}" />
         </exec>
     </target>
 
     <target name="build" depends="upload">
         <exec executable="ssh">
-            <arg value="root@rpi.lan" />
+            <arg value="root@${rpi.hostname}" />
             <arg value="-C" />
             <arg value="chmod a+x ~/${project}/${binary}" />
         </exec>
@@ -28,7 +30,7 @@
 
     <target name="clean">
         <exec executable="ssh">
-            <arg value="root@rpi.lan" />
+            <arg value="root@${rpi.hostname}" />
             <arg value="-C" />
             <arg value="rm -rf ~/${project}" />
         </exec>

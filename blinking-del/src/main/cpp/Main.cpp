@@ -10,7 +10,7 @@
 using namespace std;
 
 int main(int argumentCount, char** arguments) {
-	cout << "Hello Rpi, From Workstation!" << endl;
+    cout << "Hello Rpi, From Workstation!" << endl;
 
-	return 0;
+    return 0;
 }
